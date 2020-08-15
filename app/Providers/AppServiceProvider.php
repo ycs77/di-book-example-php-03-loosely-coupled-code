@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\Services\ProductService as ProductServiceContract;
+use App\Services\ProductService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Bind services
+        $this->app->bind(ProductServiceContract::class, ProductService::class);
     }
 
     /**
