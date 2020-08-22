@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Casts\Money as MoneyCast;
+use App\Contracts\Currency\CurrencyConverter;
 use App\Contracts\UserContext;
+use App\Currency\Currency;
 use App\Currency\Money;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +23,13 @@ class Product extends Model
         'unit_price' => MoneyCast::class,
         'is_featured' => 'boolean',
     ];
+
+    public function convertTo(Currency $currency, CurrencyConverter $converter)
+    {
+        return $this->withUnitPrice(
+            $converter->exchange($this->unit_price, $currency)
+        );
+    }
 
     public function withUnitPrice(Money $money)
     {

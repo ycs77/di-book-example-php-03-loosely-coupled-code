@@ -32,12 +32,8 @@ class ProductService implements ProductServiceContract
 
         return $this->productRepository
             ->getFeaturedProducts()
-            ->map(function (Product $product) use ($userCurrency) {
-                $unitPrice = $product->unit_price;
-                $amount = $this->currencyConverter->exchange($unitPrice, $userCurrency);
-                return $product
-                    ->withUnitPrice($amount)
-                    ->applyDiscountFor($this->userContext);
-            });
+            ->map(fn (Product $product) => $product
+                ->convertTo($userCurrency, $this->currencyConverter)
+                ->applyDiscountFor($this->userContext));
     }
 }
