@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Contracts\Currency\Currencyable;
+use App\Currency\Currency;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Currencyable
 {
     use Notifiable;
 
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_preferred_customer',
+        'name', 'email', 'password', 'is_preferred_customer', 'currency',
     ];
 
     /**
@@ -36,4 +38,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->currency = $user->currency ?? config('money.defaultCurrency');
+        });
+    }
+
+    public function getCurrency(): Currency
+    {
+        return new Currency($this->currency);
+    }
 }

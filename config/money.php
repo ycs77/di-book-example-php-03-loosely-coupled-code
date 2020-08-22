@@ -19,4 +19,21 @@ return [
         ],
     ],
 
+    'exchange' => [
+        'default' => 'fixed',
+
+        'fixed' => [
+            'list' => [
+                'TWD' => [
+                    'TWD' => 1,
+                    'USD' => 0.0339581,
+                ],
+                'USD' => [
+                    'TWD' => 29.4481,
+                    'USD' => 1,
+                ],
+            ],
+        ],
+    ],
+
 ];

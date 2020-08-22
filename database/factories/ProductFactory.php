@@ -2,6 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Currency\Currency;
+use App\Currency\Money;
 use App\Product;
 use Faker\Generator as Faker;
 use Illuminate\Support\Arr;
@@ -41,7 +43,7 @@ $factory->define(Product::class, function (Faker $faker) use (&$productNameList,
             Arr::forget($productNameList, array_search($productName, $productNameList));
         }),
         'description' => $faker->realText(30),
-        'unit_price' => $faker->numberBetween(10, 1000),
+        'unit_price' => new Money($faker->numberBetween(10, 1000), new Currency(config('money.defaultCurrency'))),
         'is_featured' => $faker->boolean,
     ];
 });

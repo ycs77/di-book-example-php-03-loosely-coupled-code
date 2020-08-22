@@ -3,6 +3,7 @@
 namespace App\Contexts;
 
 use App\Contracts\UserContext as UserContextContract;
+use App\Currency\Currency;
 use App\User;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
@@ -19,6 +20,11 @@ class UserContext implements UserContextContract
     public function isPreferredCustomer(): bool
     {
         return optional($this->user())->is_preferred_customer ?? false;
+    }
+
+    public function currency(): Currency
+    {
+        return optional($this->user())->getCurrency() ?? new Currency(config('money.defaultCurrency'));
     }
 
     protected function user(): ?User
